@@ -1,7 +1,10 @@
 package cn.qiuxiang.react.amap3d.maps
 
 import android.content.Context
+import android.os.Environment
 import android.view.View
+import java.io.File
+import java.io.FileOutputStream
 import cn.qiuxiang.react.amap3d.toLatLng
 import cn.qiuxiang.react.amap3d.toLatLngBounds
 import cn.qiuxiang.react.amap3d.toWritableMap
@@ -104,8 +107,25 @@ class AMapView(context: Context) : TextureMapView(context) {
         }
 
         map.setInfoWindowAdapter(AMapInfoWindowAdapter(context, markers))
+        map.setCustomMapStylePaths(findMapStylePath())
+        map.setMapCustomEnable(true);
     }
-
+    fun findMapStylePath(): String {
+        var path = context.getExternalFilesDir("amap").getPath() + "wdtappstyle.data"
+        var file = File(path)
+        if(!file.exists()){
+            var inputStream = context.getAssets().open("wdtappstyle.data")
+            var outputStream = FileOutputStream(path)
+            var byteArray = ByteArray(512)
+            while (inputStream.read(byteArray) != -1) {
+                outputStream.write(byteArray)
+            }
+            outputStream.flush()
+            outputStream.close()
+            inputStream.close()
+        }
+        return path
+    }
     fun emitCameraChangeEvent(event: String, position: CameraPosition?) {
         position?.let {
             val data = it.target.toWritableMap()

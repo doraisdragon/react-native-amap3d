@@ -107,7 +107,7 @@ class AMapView(context: Context) : TextureMapView(context) {
         }
 
         map.setInfoWindowAdapter(AMapInfoWindowAdapter(context, markers))
-        map.setCustomMapStylePaths(findMapStylePath())
+        map.setCustomMapStylePath(findMapStylePath())
         map.setMapCustomEnable(true);
     }
     fun findMapStylePath(): String {

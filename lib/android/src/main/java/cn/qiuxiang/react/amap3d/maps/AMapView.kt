@@ -110,8 +110,9 @@ class AMapView(context: Context) : TextureMapView(context) {
         map.setCustomMapStylePath(findMapStylePath())
         map.setMapCustomEnable(true);
     }
+
     fun findMapStylePath(): String {
-        var path = context.getExternalFilesDir("amap").getPath() + "wdtappstyle.data"
+        var path = context.getExternalFilesDir("data").getPath() + "/wdtappstyle.data"
         var file = File(path)
         if(!file.exists()){
             var inputStream = context.getAssets().open("wdtappstyle.data")
@@ -126,6 +127,7 @@ class AMapView(context: Context) : TextureMapView(context) {
         }
         return path
     }
+
     fun emitCameraChangeEvent(event: String, position: CameraPosition?) {
         position?.let {
             val data = it.target.toWritableMap()
